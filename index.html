@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ขอเป็นแฟน 💗</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Mitr:wght@300;500&display=swap');
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', 'Mitr', sans-serif;
+            background: linear-gradient(135deg, #ffb6c1, #ffe4ec);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* หน้าแรกเพื่อให้กดเล่นเพลง */
+        #start-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: white;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .btn-start {
+            padding: 15px 40px;
+            font-size: 22px;
+            background: #ff4d88;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 77, 136, 0.4);
+            transition: transform 0.2s;
+        }
+        .btn-start:hover { transform: scale(1.1); }
+
+        .container {
+            background: #fff;
+            padding: 26px;
+            border-radius: 26px;
+            box-shadow: 0 15px 35px rgba(255,105,180,0.35);
+            text-align: center;
+            width: 90%;
+            max-width: 360px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* แก้ไขกรอบรูปให้อยู่ในกรอบขาวพอดี */
+        .photo-frame {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            background: white;
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .photo-frame img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; /* ทำให้รูปไม่ล้นขอบและคงสัดส่วนเดิม */
+            border-radius: 8px;
+        }
+
+        .title {
+            font-size: 26px;
+            color: #ff4d88;
+            margin-bottom: 18px;
+            animation: sparkle 2s infinite;
+        }
+
+        .display {
+            font-size: 28px;
+            height: 40px;
+            letter-spacing: 12px;
+            margin: 20px 0 24px;
+            color: #ff6fae;
+            border-bottom: 2px solid #ffd1e1;
+        }
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        button.key {
+            font-size: 22px;
+            padding: 16px 0;
+            border: none;
+            border-radius: 18px;
+            background: linear-gradient(145deg, #ff8fb8, #ff5f9e);
+            color: #fff;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button.key:active { transform: scale(0.9); }
+
+        .clear {
+            grid-column: span 3;
+            background: #ffd1e1 !important;
+            color: #ff3385 !important;
+            margin-top: 5px;
+        }
+
+        .floating-heart {
+            position: fixed;
+            bottom: -10%;
+            user-select: none;
+            pointer-events: none;
+            z-index: 1;
+            animation: floatUp linear forwards;
+        }
+
+        @keyframes floatUp {
+            to { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { text-shadow: 0 0 5px #ffc1da; }
+            50% { text-shadow: 0 0 15px #ff5fa2; }
+        }
+        
+        .hint { font-size: 14px; color: #aaa; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div id="start-screen">
+    <h1 style="color: #ff4d88;">💖 ยินดีต้อนรับ 💖</h1>
+    <p>กดเพื่อเปิดของขวัญจากเรานะ</p>
+    <br>
+    <button class="btn-start" onclick="initApp()">Start ✨</button>
+</div>
+
+<audio id="bgm" loop>
+    <source src="music\mike.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container" id="lock" style="display:none;">
+    <h1 class="title">🔐 Enter Code ✨</h1>
+    <div class="display" id="display"></div>
+    <div class="keypad">
+        <button class="key" onclick="press('1')">1</button>
+        <button class="key" onclick="press('2')">2</button>
+        <button class="key" onclick="press('3')">3</button>
+        <button class="key" onclick="press('4')">4</button>
+        <button class="key" onclick="press('5')">5</button>
+        <button class="key" onclick="press('6')">6</button>
+        <button class="key" onclick="press('7')">7</button>
+        <button class="key" onclick="press('8')">8</button>
+        <button class="key" onclick="press('9')">9</button>
+        <div style="grid-column: span 1;"></div>
+        <button class="key" onclick="press('0')">0</button>
+        <div style="grid-column: span 1;"></div>
+        <button class="key clear" onclick="clearCode()">Clear</button>
+    </div>
+    <p class="hint">ใบ้ให้: 22022536 💫</p>
+</div>
+
+<div class="container love" id="love" style="display:none;">
+    <h2>💗 เราเป็นแฟนกับเธอได้ไหม 💗</h2>
+    <p style="font-size:18px; color: #ff6fae;">"เราไม่ใช่คนที่ดีที่สุด แต่เราพร้อม<br>ทำให้เธอมีความสุขที่สุด เป็นแฟนกับเรานะ" </p>
+  
+ <div class="photo-frame">
+    <img src="images/img01.jpg" alt="photo 1">
+</div>   
+    <p>🧸✨🎀</p>
+</div>
+
+<script>
+    const secret = "22022536"; 
+    let input = "";
+    const bgm = document.getElementById('bgm');
+
+    function initApp() {
+        // เริ่มเพลง
+        bgm.play().catch(e => console.error("Music error:", e));
+
+        // หัวใจลอยตลอดเวลา
+        startHeartLoop();
+
+        // เปลี่ยนหน้า
+        document.getElementById('start-screen').style.display = 'none';
+        document.getElementById('lock').style.display = 'block';
+    }
+
+    function startHeartLoop() {
+        setInterval(spawnHeart, 500);
+    }
+
+    function spawnHeart() {
+        const heart = document.createElement('div');
+        heart.innerHTML = '💗';
+        heart.className = 'floating-heart';
+        
+        const startPos = Math.random() * 100;
+        const size = Math.random() * 20 + 15;
+        const duration = Math.random() * 3 + 3;
+
+        heart.style.left = startPos + 'vw';
+        heart.style.fontSize = size + 'px';
+        heart.style.animationDuration = duration + 's';
+        heart.style.opacity = Math.random() * 0.5 + 0.5;
+
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), duration * 1000);
+    }
+
+    function press(num) {
+        if (input.length >= secret.length) return;
+        input += num;
+        document.getElementById('display').innerText = "•".repeat(input.length);
+
+        if (input === secret) {
+            setTimeout(() => {
+                document.getElementById('lock').style.display = 'none';
+                document.getElementById('love').style.display = 'block';
+            }, 300);
+        } else if (input.length === secret.length) {
+            setTimeout(clearCode, 500);
+        }
+    }
+
+    function clearCode() {
+        input = "";
+        document.getElementById('display').innerText = "";
+    }
+</script>
+
+</body>
+</html>

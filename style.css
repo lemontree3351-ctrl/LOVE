@@ -1,0 +1,27 @@
+/* ตกแต่งกรอบรูปใหม่ */
+.photo-frame {
+    width: 180px;          /* ปรับขนาดกรอบให้เล็กลงตามต้องการ */
+    height: 180px;         /* ความสูงเท่ากับความกว้างเพื่อให้เป็นสี่เหลี่ยมจตุรัส */
+    margin: 20px auto;
+    background-color: #fff; /* พื้นหลังสีขาว */
+    padding: 10px;         /* ระยะห่างระหว่างรูปกับขอบกรอบขาว */
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    transform: rotate(-3deg);
+    transition: 0.5s;
+}
+
+.photo-frame:hover {
+    transform: rotate(0deg) scale(1.05);
+}
+
+.photo-frame img {
+    max-width: 100%;       /* กำหนดให้รูปกว้างไม่เกินกรอบ */
+    max-height: 100%;      /* กำหนดให้รูปสูงไม่เกินกรอบ */
+    object-fit: contain;   /* ทำให้รูปอยู่ในกรอบพอดี โดยไม่ถูกตัดขอบ */
+    border-radius: 5px;    /* มนขอบรูปเล็กน้อยให้เข้ากับกรอบ */
+}
